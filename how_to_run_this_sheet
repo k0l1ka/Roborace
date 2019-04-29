@@ -1,4 +1,0 @@
-
-g++ -c wx.cpp `wx-config --cflags`
-g++  wx.o `wx-config --libs` -o wx
-
