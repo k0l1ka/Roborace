@@ -11,32 +11,43 @@
 
 using namespace std;
 
-#define player1  3
-#define player2  4
-#define track  0
-#define grass  7
-#define start  1
+#define player1_id  3
+#define player2_id  4
+#define track  0  //road
+#define grass  7  //not road
+#define start  1 
 #define finish  2
 
 
 
-class Player()
+fstream file_with_Map;
+string line;
+int line_lenght;
+int height;
+int width;
+
+int cells_width = 34;
+int cells_height = 19;
+
+int Map[100][100];
+
+
+
+
+
+class Player
 {
 
 private:
+	int id;
 	int currentX, currentY, startX, startY;
-	int vx, vy;
+	int shiftX, shiftY; //from current point (=player) position
 	int radius;
 	//wxColor color;
 
 public:
 	//friend class Player;
-	pair <int,int> get_current_pos()
-	{	
-		pair <int,int> pos = make_pair(this->currentX, this->currentY);
-		return pos; 
-	}
-
+	
 	Player(int player_id)
 	{
 		for (int i = 0; i < cells_height; i++)
@@ -45,17 +56,27 @@ public:
 			{
 				if (Map[i][j] == player_id)
 				{
-					startX = j;
-					startY = i;
+					this->startX = j;
+					this->startY = i;
 				}
 			}
 		}
-
-		currentX = startX;
-		currentY = startY;
+		this->shiftX = 0;
+		this->shiftY = 0;
+		this->id = player_id; 
+		this->currentX = startX; // horizontal from left to right
+		this->currentY = startY; // vertical from up to down
 	};
 
-	int is_collapse(Player partner)
+
+	pair <int,int> get_current_pos()
+	{	
+		pair <int,int> position = make_pair(this->currentX, this->currentY);
+		return position; 
+	}
+
+
+	int is_collapse(Player partner) //one with another or with grass
 	{
 		if ( (this->get_current_pos().first == partner.get_current_pos().first) && 
 			(this->get_current_pos().second == partner.get_current_pos().second) )
@@ -71,32 +92,57 @@ public:
 		}
 	};
 
-	int check_win()
+	void move_to_start(Player this_player)
 	{
-		for (int i = this->get_current_pos().second; i < this->get_current_pos().first - vy; i++)
+		this->currentX = this->startX;
+		this->currentY = this->startY;	
+	};
+
+	int player_won()
+	{
+		int current_X = this->get_current_pos().first;
+		int current_Y = this->get_current_pos().second;
+		int previous_X = current_X - this->shiftX;
+		int previous_Y = current_Y - this->shiftY;
+
+		int finished = 0;
+
+		for (int i = previous_X; i < current_X; i++)
+		{
+			for (int j = previous_Y; j < current_Y; j++)
+			{
+				if (Map[j][i] == finish)
+				{
+					return 1;	
+				}
+				else 
+					return 0;
+			}			
+		}
 	};
 	
-}
+	void move(int x, int y)
+	{
+		Map[currentX][currentY] = track;
+		cout << "старую позициб замазал\n";
+		this->shiftX = x;
+		this->shiftY = y;
+		cout <"шифт обновил\n";
+		currentX += shiftX;
+		currentY += shiftY;
+		cout <"каррент позицию обновил\n";
+		Map[currentX][currentY] = this->id;
+		cout <"новую позицию наривал\n";
+	}
+};
 
 
 
-int game_over()
-{
-
-}
 
 
 
 
 
-fstream file_with_Map;
-string line;
-int line_lenght;
-int height;
-int width;
-int cells_width = 34;
-int cells_height = 19;
-int Map[100][100];
 
 
 
@@ -157,25 +203,30 @@ void print_map()
 void game()
 {
 	load_map();
+	print_map();
 
-	while (!())
+	Player racer1(player1_id);
+	Player racer2(player2_id);
+
+	while (!( racer1.player_won() ) && !(racer2.player_won()) )
 	{
+		int x, y;
 
-	} 
+		cout << "Ходит 1 игрок: ввести вектор сдвига -- х и у\n";
+		cin >> x, y;
+		cout << "делаю ход\n";
+
+		racer1.move(x, y);
+		
+		print_map();
+
+		cout << "Ходит 2 игрок: ввести вектор сдвига -- х и у";
+		cin >> x, y;
+		racer2.move(x, y);
+		print_map();		
+	}
+	cout << "GAME OVER\n";
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -248,9 +299,7 @@ int main()
 
   	else cout << "Unable to open file";
 */
+	game();
 
-	load_map();
-	print_map();
-	
 	return 0;
 }
