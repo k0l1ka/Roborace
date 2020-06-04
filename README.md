@@ -1,20 +1,6 @@
-# Roborace
-GUI xWidgets project 
+This is a desktop app for simple GUI game built with wxWidgets.
 
-
-Файл ex1.cpp - просто пример использования wxWidgets. еще примеры есть в контейнере
-________________________________________________
-commit 1
-
-Файл final - последняя версия кода (второе окно в игре, тут реализована сетка и отклик на клик мыши)
-
-logics - версия для терминала
-
-button - стартовое окно в игре 
-_________________________________
-commit 2
-
-Кнопка с появляющимся справа изображением пока что статическим.
-
-в image.h представлена отрисовка по изменению условию можно адаптировать для вектора
-https://wiki.wxwidgets.org/An_image_panel
+### To launch this app:
+-- install wxWidgets library for C++ (described in pdf)
+-- type "make" in terminal to get executable "roborace"
+-- double click or execute from terminal this executable
