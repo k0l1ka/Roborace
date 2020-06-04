@@ -1,6 +1,0 @@
-both of this names can be changed:
-1) wx.cpp  is the name of the project file 
-2) wx  is the name of executable file 
-
-g++ -c wx.cpp `wx-config --cflags`
-g++  wx.o `wx-config --libs` -o wx

@@ -8,7 +8,7 @@ class wxImagePanel : public wxPanel
     int w, h;
 
 public:
-    wxImagePanel(wxPanel* parent, wxString file, wxBitmapType format);
+    wxImagePanel(wxFrame* parent, wxString file, wxBitmapType format);
 
     void paintEvent(wxPaintEvent & evt);
     void paintNow();
@@ -63,8 +63,8 @@ END_EVENT_TABLE()
  void wxImagePanel::keyReleased(wxKeyEvent& event) {}
  */
 
-wxImagePanel::wxImagePanel(wxPanel* parent, wxString file, wxBitmapType format) :
-wxPanel(parent, wxID_ANY)
+wxImagePanel::wxImagePanel(wxFrame* parent, wxString file, wxBitmapType format) :
+wxPanel(parent)
 {
     // load the file... ideally add a check to see if loading was successful
     image.LoadFile(file, format);
@@ -130,3 +130,6 @@ void wxImagePanel::OnSize(wxSizeEvent& event){
     //skip the event.
     event.Skip();
 }
+
+// ----------------------------------------
+// how-to-use example

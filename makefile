@@ -1,4 +1,4 @@
-all: roborace
+all: roborace clean
 
 roborace.o: roborace.cpp 
 	g++ -c roborace.cpp  `wx-config --cflags`
